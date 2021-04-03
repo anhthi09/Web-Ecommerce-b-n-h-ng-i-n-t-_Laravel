@@ -12,13 +12,25 @@ use Illuminate\Support\Facades\Redirect;
 session_start();
 class ProductController extends Controller
 {
+    public function AuthLogin(){
+        $admin_id= Session::get('admin_id');
+        if($admin_id){
+           return redirect::to('admin.dashboard');
+
+        }
+        else{
+           return redirect::to('admin')->send();
+        }
+    }
     public function add_product(){
+        $this->AuthLogin();
         $cate_product= DB::table('tbl_category_product')->orderBy('category_id','desc')->get();
         $brand_product= DB::table('tbl_brand')->orderBy('brand_id','desc')->get();
         return view('admin.add_product')-> with('cate_product',$cate_product)->with('brand_product',$brand_product);
             }
             
             public function all_product(){
+                $this->AuthLogin();
              $all_product = DB::table('tbl_product')
              ->join('tbl_category_product','tbl_category_product.category_id','=','tbl_product.category_id')
              ->join('tbl_brand','tbl_brand.brand_id','=','tbl_product.brand_id')
@@ -29,6 +41,7 @@ class ProductController extends Controller
                 
             }
             public function save_product(Request $request){
+                $this->AuthLogin();
                 $data = array();
                 $data['product_name']= $request->product_name;
                 $data['product_price']= $request->product_price;
@@ -59,6 +72,7 @@ class ProductController extends Controller
         
             } 
             public function edit_product(Request $request,$product_id){
+                $this->AuthLogin();
                 $cate_product= DB::table('tbl_category_product')->orderBy('category_id','desc')->get();
                 $brand_product= DB::table('tbl_brand')->orderBy('brand_id','desc')->get();
                 $edit_product = DB::table('tbl_product')->where('product_id',$product_id)->get();
@@ -68,6 +82,7 @@ class ProductController extends Controller
                    
                }
                public function update_product(Request $request,$product_id){
+                $this->AuthLogin();
                 $data = array();
                 $data['product_name']= $request->product_name;
                 $data['product_price']= $request->product_price;
@@ -98,10 +113,32 @@ class ProductController extends Controller
            return Redirect::to('all-product') ;
                }
                public function delete_product($product_id){
+                $this->AuthLogin();
                 DB::table('tbl_product')->where('product_id',$product_id)->delete();
                 session::put('message','Xóa sản phẩm thành công');
                 return Redirect::to('all-product');
         
                }
+               //END FUNCTION PRODUCT ADMIN
+               public function show_details_product($product_id){
+                $cate_product= DB::table('tbl_category_product')->orderBy('category_id','desc')->get();
+                $brand_product= DB::table('tbl_brand')->orderBy('brand_id','desc')->get();
+                $show_details_product = DB::table('tbl_product')
+                ->join('tbl_category_product','tbl_category_product.category_id','=','tbl_product.category_id')
+                ->join('tbl_brand','tbl_brand.brand_id','=','tbl_product.brand_id')
+                ->orderby('tbl_product.product_id','desc')->where('product_id',$product_id)->get();
+                foreach($show_details_product as $key =>$value){
+                    $category_id=$value->category_id;
+                }
+                $show_related_product = DB::table('tbl_product')
+                ->join('tbl_category_product','tbl_category_product.category_id','=','tbl_product.category_id')
+                ->join('tbl_brand','tbl_brand.brand_id','=','tbl_product.brand_id')
+                ->where('tbl_category_product.category_id',$category_id)->whereNotIn('product_id',[$product_id])->get();
+                return view('pages.product.show_detail')->with('category',$cate_product)->with('brand',$brand_product)->with('show_details_product',$show_details_product)->with('show_related_product',$show_related_product);
+            }
+       
+
+           
+
         
 }

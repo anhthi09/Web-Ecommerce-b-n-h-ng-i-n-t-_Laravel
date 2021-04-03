@@ -15,7 +15,12 @@ use Illuminate\Support\Facades\Route;
 //FONTEND
 Route::get('/','App\Http\Controllers\HomeController@index');
 Route::get('/trang-chu','App\Http\Controllers\HomeController@index' );
-
+//DANH-MUC-SP-TRANG-CHU
+Route::get('/danh-muc-san-pham/{category_id}','App\Http\Controllers\CategoryProduct@show_category_home' );
+//THUONG-HIEU-SP-TRANGCHU
+Route::get('/thuong-hieu-san-pham/{brand_id}','App\Http\Controllers\BrandProduct@show_brand_home');
+//CHI-TIET-SP
+Route::get('/chi-tiet-san-pham/{product_id}','App\Http\Controllers\ProductController@show_details_product');
 //BACK-END
 Route::get('/admin','App\Http\Controllers\AdminController@index');
 Route::get('/dashboard','App\Http\Controllers\AdminController@show_dashboard');
@@ -46,3 +51,20 @@ Route::post('/update-product/{product_id}','App\Http\Controllers\ProductControll
 Route::get('/delete-product/{product_id}','App\Http\Controllers\ProductController@delete_product');
 Route::get('/all-product','App\Http\Controllers\ProductController@all_product');
 Route::post('/save-product','App\Http\Controllers\ProductController@save_product');
+Route::post('/tim-kiem','App\Http\Controllers\HomeController@search_product');
+
+
+//CART
+Route::post('/save-cart','App\Http\Controllers\CartController@save_cart');
+Route::post('/update-cart','App\Http\Controllers\CartController@update_cart');
+Route::get('/show-cart','App\Http\Controllers\CartController@show_cart');
+Route::get('/delete-to-cart/{rowId}','App\Http\Controllers\CartController@delete_cart');
+//Checkout
+Route::post('/login-customer','App\Http\Controllers\CheckoutController@login_customer');
+Route::get('/login-checkout','App\Http\Controllers\CheckoutController@login_checkout');
+Route::post('/add-customer','App\Http\Controllers\CheckoutController@add_customer');
+Route::get('/show-checkout','App\Http\Controllers\CheckoutController@checkout');
+Route::get('/logout-checkout','App\Http\Controllers\CheckoutController@logout_checkout');
+Route::post('/save-checkout-customer','App\Http\Controllers\CheckoutController@save_checkout_customer');
+
+

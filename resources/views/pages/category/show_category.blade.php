@@ -1,11 +1,10 @@
 @extends('layout')
 @section('content')
 
-<div class="col-sm-9 padding-right">
 <div class="features_items">
     <!--features_items-->
-    <h2 class="title text-center">Sản phẩm mới nhất</h2>
-    @foreach($all_product as $key=> $all_pro)
+    <h2 class="title text-center">Danh mục sản phẩm</h2>
+    @foreach($category_by_id as $key=> $all_pro)
 
     <div class="col-sm-4">
         <div class="product-image-wrapper">
@@ -31,6 +30,5 @@
         </div>
     </div>
 </div>
-
 @endforeach
 @endsection
