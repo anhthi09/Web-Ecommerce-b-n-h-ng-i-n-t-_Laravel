@@ -66,5 +66,10 @@ Route::post('/add-customer','App\Http\Controllers\CheckoutController@add_custome
 Route::get('/show-checkout','App\Http\Controllers\CheckoutController@checkout');
 Route::get('/logout-checkout','App\Http\Controllers\CheckoutController@logout_checkout');
 Route::post('/save-checkout-customer','App\Http\Controllers\CheckoutController@save_checkout_customer');
+Route::get('/payment','App\Http\Controllers\CheckoutController@payment');
+Route::post('/order-place','App\Http\Controllers\CheckoutController@order_place');
 
 
+//ORDER
+Route::get('/manage-order','App\Http\Controllers\CheckoutController@manage_order');
+Route::get('/view-order/{orderId}','App\Http\Controllers\CheckoutController@view_order');

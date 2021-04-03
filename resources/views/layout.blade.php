@@ -24,7 +24,6 @@
     <link rel="apple-touch-icon-precomposed" href="{{('public/frontend/images/apple-touch-icon-57-precomposed.png')}}">
 </head>
 <!--/head-->
-
 <body>
     <header id="header">
         <!--header-->
@@ -95,13 +94,21 @@
                                 <li><a href="#"><i class="fa fa-star"></i> Yêu thích</a></li>
                                 <?php
                                 $customer_id = Session::get('customer_id');
-                                if ($customer_id != NULL) {
+                                $shipping_id = Session::get('shipping_id');
+                                
+
+                                if ($customer_id != NULL && $shipping_id==NULL) {
                                 ?>
                                 <li><a href="{{URL::to('/show-checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
                                 <?php
-                                } else {
+                                } else if($customer_id != NULL && $shipping_id!=NULL) {
 
                                 ?>
+                                <li><a href="{{URL::to('/payment')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
+                                <?php
+                                } else{
+                                ?>
+
                                     <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
                                 <?php
                                 }
